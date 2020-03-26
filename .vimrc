@@ -84,7 +84,7 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'dracula/vim', { 'name': 'dracula' }
 Plugin 'NLKNguyen/papercolor-theme'
 Plugin 'rakr/vim-one'
-
+Plugin 'arcticicestudio/nord-vim'
 
 " set background=dark
 colorscheme one
@@ -108,10 +108,37 @@ set nu
 
 
 Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+Plugin 'itchyny/lightline.vim'
 
-
+set noshowmode
 
 set clipboard=unnamed
 
 
 "set editing-mode vi
+
+
+Plugin 'vim-airline/vim-airline'
+
+
+let g:lightline = {
+     \ 'colorscheme': 'one',}
+
+set shortmess=F
+let g:airline_theme='simple'
+let g:airline#extensions#tabline#left_alt_sep = ' '
+let g:airline#extensions#tabline#formatter = 'default'
+
+
+" let g:netrw_banner = 0
+" let g:netrw_liststyle = 3
+" let g:netrw_browse_split = 4
+" let g:netrw_altv = 1
+let g:netrw_winsize = 25
+" augroup ProjectDrawer
+"  autocmd!
+"  autocmd VimEnter * :Vexplore
+" augroup END
+
+:set number relativenumber
+
