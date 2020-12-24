@@ -14,6 +14,18 @@ super + d
 super + Escape
 	pkill -USR1 -x sxhkd
 
+super + shift + w
+  code
+
+super + w
+  brave
+
+super + shift + Return
+  pcmanfm
+
+super + shift + d
+  mpv $(xclip -o)
+
 #
 # bspwm hotkeys
 #
