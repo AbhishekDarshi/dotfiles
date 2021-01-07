@@ -53,15 +53,6 @@
 ;; (setq ido-enable-flex-matching t)
 ;; (ido-mode t)
 
-;; checkout helm as well
-
-;;(use-package projectile
-;;  :ensure t
-;;  :diminish projectile-mode
-;;  :config
-;;  (projectile-mode)
-;;  (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
-;;  (projectile-mode +1))
 
 (use-package expand-region
   :ensure t
@@ -83,6 +74,7 @@
   (company-idle-delay 0.0))
 ;; check if company can use tab to cycle and insert the completion as well at the same time...
 
+(add-hook 'after-init-hook 'global-company-mode)
 
 (use-package company-box
   :ensure t
@@ -95,13 +87,14 @@
   :init
   ;; Add all your customizations prior to loading the themes
   (setq modus-themes-slanted-constructs t
+;;	set-face-attribute 'cursor nil :background (modus-themes-color-alts 'blue 'blue)
 	modus-themes-mode-line '2d
         modus-themes-bold-constructs nil)
   :config
   ;; Load the theme of your choice
   ;; (modus-themes-load-operandi)
   ;; ;; OR
-  (load-theme 'modus-operandi t)
+  (load-theme 'modus-vivendi t)
   :bind ("<f5>" . modus-themes-toggle))
 
 (set-face-attribute 'cursor nil :background (modus-themes-color-alts 'blue 'blue))
@@ -200,6 +193,12 @@
 (use-package powerline
   :ensure t)
 
+(use-package eyebrowse
+ :ensure t
+ :diminish eyebrowse-mode
+ :config (progn
+           (eyebrowse-mode t)
+           (setq eyebrowse-new-workspace t)))
 
 ;;(use-package minions
 ;;  :ensure t
@@ -207,6 +206,18 @@
 
 ;;(use-package diminish
 ;;  :ensure t)
+
+;; (use-package workgroups2
+;;   :ensure t
+;;   :config
+;;   (setq workgroups-mode 1
+;; 	wg-mode-line-display-on t
+;; 	wg-flag-modified t
+;; 	wg-mode-line-decor-left-brace "["
+;;         wg-mode-line-decor-right-brace "]"  ; how to surround it
+;;         wg-mode-line-decor-divider ":"))
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -215,7 +226,7 @@
  '(global-display-line-numbers-mode t)
  '(global-hl-line-mode t)
  '(package-selected-packages
-   '(spaceline-config spaceline-all-the-icons yasnippet-snippets which-key use-package swiper rainbow-delimiters pyvenv python-mode projectile modus-themes magit lsp-pyright ivy-rich ivy-prescient expand-region doom-modeline diminish company-prescient company-box all-the-icons-ivy all-the-icons-dired)))
+   '(eyebrowse workgroups2 spaceline-config spaceline-all-the-icons yasnippet-snippets which-key use-package swiper rainbow-delimiters pyvenv python-mode projectile modus-themes magit lsp-pyright ivy-rich ivy-prescient expand-region doom-modeline diminish company-prescient company-box all-the-icons-ivy all-the-icons-dired)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
