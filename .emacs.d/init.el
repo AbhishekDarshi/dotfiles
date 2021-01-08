@@ -13,6 +13,11 @@
 ;; (tooltip mode -1)
 (menu-bar-mode -1)
 
+;; cycle spacing blank characters
+(global-set-key (kbd "M-SPC") 'cycle-spacing)
+;; delete blank lines - by default it is bound to C-x C-o
+(global-set-key (kbd "M-o") 'delete-blank-lines)
+
 ;;(set-frame-font "Hack 11" nil t)
 
 (unless (package-installed-p 'use-package)
@@ -40,8 +45,8 @@
     (setq projectile-project-search-path '("~/devc/")))
   (setq projectile-switch-project-action #'projectile-dired))
 
-;;(global-hl-line-mode +1)
-
+(global-hl-line-mode +1)
+(add-hook 'prog-mode-hook 'linum-mode)
 (delete-selection-mode 1)
 
 (setq backup-directory-alist '(("." . "~/custom/.saves")))
@@ -263,7 +268,7 @@
 
 (use-package minions
   :ensure t
-  :config (minions-mode 1))
+  :config (minions-mode -1))
 
 (use-package diminish
   :ensure t)
@@ -272,24 +277,24 @@
 (blink-cursor-mode -1)
 
 ;; icomplete
-(use-package icomplete-vertical
-  :ensure t
-  :demand t
-  :custom
-  (completion-styles '(partial-completion substring))
-  (completion-category-overrides '((file (styles basic substring))))
-  (read-file-name-completion-ignore-case t)
-  (read-buffer-completion-ignore-case t)
-  (completion-ignore-case t)
-  :config
-  (icomplete-mode -1)
-  (icomplete-vertical-mode)
-  :bind (:map icomplete-minibuffer-map
-              ("<down>" . icomplete-forward-completions)
-              ("C-n" . icomplete-forward-completions)
-              ("<up>" . icomplete-backward-completions)
-              ("C-p" . icomplete-backward-completions)
-              ("C-v" . icomplete-vertical-toggle)))
+;; (use-package icomplete-vertical
+;;   :ensure t
+;;   :demand t
+;;   :custom
+;;   (completion-styles '(partial-completion substring))
+;;   (completion-category-overrides '((file (styles basic substring))))
+;;   (read-file-name-completion-ignore-case t)
+;;   (read-buffer-completion-ignore-case t)
+;;   (completion-ignore-case t)
+;;   :config
+;;   (icomplete-mode -1)
+;;   (icomplete-vertical-mode)
+;;   :bind (:map icomplete-minibuffer-map
+;;               ("<down>" . icomplete-forward-completions)
+;;               ("C-n" . icomplete-forward-completions)
+;;               ("<up>" . icomplete-backward-completions)
+;;               ("C-p" . icomplete-backward-completions)
+;;               ("C-v" . icomplete-vertical-toggle)))
 
 (use-package orderless
   :ensure t
@@ -325,7 +330,7 @@
  ;; If there is more than one, they won't work right.
  '(global-hl-line-mode t)
  '(package-selected-packages
-   '(orderless icomplete-vertical minions diminish ibuffer-projectile yasnippet-snippets which-key use-package rainbow-delimiters pyvenv python-mode powerline modus-themes magit lsp-pyright ivy-rich ivy-prescient helpful eyebrowse expand-region doom-modeline counsel-projectile company-prescient company-box all-the-icons-ivy all-the-icons-dired)))
+   '(orderless minions diminish ibuffer-projectile yasnippet-snippets which-key use-package rainbow-delimiters pyvenv python-mode powerline modus-themes magit lsp-pyright ivy-rich ivy-prescient helpful eyebrowse expand-region doom-modeline counsel-projectile company-prescient company-box all-the-icons-ivy all-the-icons-dired)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
