@@ -18,7 +18,18 @@
 ;; delete blank lines - by default it is bound to C-x C-o
 (global-set-key (kbd "M-o") 'delete-blank-lines)
 
-;;(set-frame-font "Hack 11" nil t)
+(use-package ace-window
+  :ensure t
+  )
+
+(global-set-key (kbd "C-x o") 'ace-window)
+
+(global-set-key (kbd "C-.") #'other-window)
+(global-set-key (kbd "C-,") #'prev-window)
+
+(defun prev-window ()
+  (interactive)
+  (other-window -1))
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -31,6 +42,25 @@
   :diminish which-key-mode
   :config
   (setq which-key-idle-delay 1))
+
+;; elfeed configs
+;; set default elfeed db directory
+(use-package elfeed
+  :ensure t
+  :config
+  (setq elfeed-feeds
+	'(("https://www.reddit.com/r/emacs/new.rss" emacs)
+	  ("https://hunterx-hunter.com/feed" manga hunter)
+	  ("https://www.reddit.com/r/planetemacs/new.rss" emacs)
+	  ("https://www.reddit.com/r/django/new.rss" python django)
+	  ("https://www.reddit.com/r/archlinux/new.rss" linux arch)
+	  ("https://news.ycombinator.com/rss" news)
+	  ))
+  )
+(global-set-key (kbd "C-x w") 'elfeed)
+
+;; checkout elfeed-org and other related packages
+
 
 (use-package projectile
   :diminish projectile-mode
@@ -46,7 +76,7 @@
   (setq projectile-switch-project-action #'projectile-dired))
 
 (global-hl-line-mode +1)
-(add-hook 'prog-mode-hook 'linum-mode)
+;; (add-hook 'prog-mode-hook 'linum-mode)
 (delete-selection-mode 1)
 
 (setq backup-directory-alist '(("." . "~/custom/.saves")))
@@ -78,7 +108,7 @@
          ("<tab>" . company-indent-or-complete-common))
   :custom
   (company-minimum-prefix-length 1)
-  (company-idle-delay 0.0))
+  (company-idle-delay 1))
 ;; check if company can use tab to cycle and insert the completion as well at the same time...
 
 (add-hook 'after-init-hook 'global-company-mode)
@@ -103,6 +133,9 @@
   ;; ;; OR
   (load-theme 'modus-vivendi t)
   :bind ("<f5>" . modus-themes-toggle))
+
+(set-face-attribute 'mode-line nil :box nil)
+(set-face-attribute 'mode-line-inactive nil :box nil)
 
 (set-face-attribute 'cursor nil :background (modus-themes-color-alts 'blue 'blue))
 
@@ -155,6 +188,24 @@
   :init
   (ivy-rich-mode 1))
 
+;; change the position of window in the frame
+(use-package ivy-posframe
+  :ensure t
+  :delight
+  :custom
+  (ivy-posframe-height-alist
+   '((swiper . 15)
+     (t . 10)))
+  (ivy-posframe-display-functions-alist
+   '((complete-symbol . ivy-posframe-display-at-point)
+     (counsel-describe-function . nil)
+     (counsel-describe-variable . nil)
+     (swiper . nil)
+     (swiper-isearch . nil)
+     (t . ivy-posframe-display-at-frame-center)))
+  :config
+  (ivy-posframe-mode -1))
+
 (use-package counsel
   :ensure t
   :bind (("C-M-j" . 'counsel-switch-buffer)
@@ -183,10 +234,10 @@
 
 (set-face-attribute 'default nil :font "Hack" :height 110)
 ;; Set the fixed pitch face
-(set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height 110)
+(set-face-attribute 'fixed-pitch nil :font "Hack" :height 110)
 
 ;; Set the variable pitch face
-(set-face-attribute 'variable-pitch nil :font "Cantarell" :height 110 :weight 'regular)
+(set-face-attribute 'variable-pitch nil :font "Cantarell" :height 130 :weight 'regular)
 
 (use-package doom-modeline
   :ensure t
@@ -196,7 +247,8 @@
 
 (use-package rainbow-delimiters
   :ensure t
-  :hook (prog-mode . rainbow-delimiters-mode))
+  :hook (prog-mode . rainbow-delimiters-mode)
+  :init (rainbow-delimiters-mode -1))
 
 (use-package all-the-icons
   :ensure t) ;; M-x all-the-icons-install-fonts
@@ -223,6 +275,17 @@
                           (require 'lsp-pyright)
                           (lsp-deferred))))
 
+(use-package python-black
+  :ensure t
+  :after python
+  :config
+  (setq python-black-on-save-mode t))
+
+;; https://github.com/wbolster/emacs-python-pytest
+(use-package python-pytest
+  :ensure t)
+
+
 (use-package pyvenv
   :ensure t
   :config
@@ -231,12 +294,18 @@
 (use-package yasnippet-snippets
   :ensure t)
 
-(use-package all-the-icons
-  :ensure t)
-
-(use-package all-the-icons-ivy
+;; vterm is not working check the documentation once.
+;; https://github.com/akermu/emacs-libvterm
+(use-package vterm
   :ensure t
-  :init (all-the-icons-ivy-setup))
+  :load-path  "/home/mars/.emacs.d/elpa/vterm-20210108.132/build/")
+
+;;(use-package all-the-icons
+;;  :ensure t)
+
+;; (use-package all-the-icons-ivy
+;;   :ensure t
+;;   :init (all-the-icons-ivy-setup))
 
 (use-package all-the-icons-dired
   :ensure t
@@ -256,6 +325,18 @@
   :config
   (company-prescient-mode 1))
 
+;; probably same as prescient, check once
+;; (use-package amx
+;;   :ensure t
+;;   :after ivy
+;;   :custom
+;;   (amx-backend 'auto)
+;;   (amx-save-file "~/.emacs/amx-items")
+;;   (amx-history-length 50)
+;;   (amx-show-keybindings nil)
+;;   :config
+;;   (amx-mode 1))
+
 (use-package powerline
   :ensure t)
 
@@ -268,7 +349,7 @@
 
 (use-package minions
   :ensure t
-  :config (minions-mode -1))
+  :config (minions-mode 1))
 
 (use-package diminish
   :ensure t)
@@ -301,16 +382,33 @@
   :init (icomplete-mode) ; optional but recommended!
   :custom (completion-styles '(orderless)))
 
-
-
-
-
+;; dap debugger config
+;; read org mode to maintain todos and other things.
+;; know more shortcuts in emacs for easy buffer movement.
+;; autocompletion for filters in elfeed.
+;; shortcut for eww.
+;; web, javascript packages for web dev.
+;; configure modeline to be more clean - currently using minion package for this.
+;; read about workgroups2 so that it can be replaced with eyebrowse.
+;; embark
+;; check for the best way to maintain this config.
+;; vterm is not working.
+;; saving current workspace or desktop state - check for this package
 ;; imenu and imenu list
-
 ;; checkout below repos for code folding
-;; https://github.com/gregsexton/origami.el/tree/e558710a975e8511b9386edc81cd6bdd0a5bda74
-;; https://github.com/matsievskiysv/vimish-fold/tree/a6501cbfe3db791f9ca17fd986c7202a87f3adb8
-;; https://github.com/emacsorphanage/yafolding/tree/4c1888ae45f9241516519ae0ae3a899f2efa05ba
+  ;; https://github.com/gregsexton/origami.el/tree/e558710a975e8511b9386edc81cd6bdd0a5bda74
+  ;; https://github.com/matsievskiysv/vimish-fold/tree/a6501cbfe3db791f9ca17fd986c7202a87f3adb8
+  ;; https://github.com/emacsorphanage/yafolding/tree/4c1888ae45f9241516519ae0ae3a899f2efa05ba
+;; add keymap toggle for commenting and uncommenting code block
+;; run pytest tests from emacs
+;; configure elfeed for easy access and play youtube video feeds, if not possible move to newsboat.
+;; check if we can find the package or pyright settings for getting the list member variables in current python buffer
+;; add a shortcut to configure vertical split into horizontal split with predefined height for it
+;; relative line number config is not working as expected.
+;; magit and dired configs
+;; zen mode for coding.
+
+
 
 ;; (use-package workgroups2
 ;;   :ensure t
@@ -328,9 +426,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(column-number-mode t)
  '(global-hl-line-mode t)
  '(package-selected-packages
-   '(orderless minions diminish ibuffer-projectile yasnippet-snippets which-key use-package rainbow-delimiters pyvenv python-mode powerline modus-themes magit lsp-pyright ivy-rich ivy-prescient helpful eyebrowse expand-region doom-modeline counsel-projectile company-prescient company-box all-the-icons-ivy all-the-icons-dired)))
+   '(ivy-posframe ace-window elfeed vterm poet-theme python-pytest python-black orderless minions diminish ibuffer-projectile yasnippet-snippets which-key use-package rainbow-delimiters pyvenv python-mode powerline modus-themes magit lsp-pyright ivy-rich ivy-prescient helpful eyebrowse expand-region doom-modeline counsel-projectile company-prescient company-box all-the-icons-ivy all-the-icons-dired)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
