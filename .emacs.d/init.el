@@ -119,25 +119,45 @@
   :hook (company-mode . company-box-mode))
 
 
-(use-package modus-themes
-  :ensure t
-  :init
-  ;; Add all your customizations prior to loading the themes
-  (setq modus-themes-slanted-constructs t
-;;	set-face-attribute 'cursor nil :background (modus-themes-color-alts 'blue 'blue)
-	modus-themes-mode-line '2d
-        modus-themes-bold-constructs nil)
+;; (use-package modus-themes
+;;   :ensure t
+;;   :init
+;;   ;; Add all your customizations prior to loading the themes
+;;   (setq modus-themes-slanted-constructs t
+;; ;;	set-face-attribute 'cursor nil :background (modus-themes-color-alts 'blue 'blue)
+;; 	modus-themes-mode-line '2d
+;;         modus-themes-bold-constructs nil)
+;;   ;;:config
+;;   ;; Load the theme of your choice
+;;   ;; (modus-themes-load-operandi)
+;;   ;; ;; OR
+;;   (load-theme 'modus-vivendi t)
+;;   :bind ("<f5>" . modus-themes-toggle))
+
+(use-package doom-themes
   :config
-  ;; Load the theme of your choice
-  ;; (modus-themes-load-operandi)
-  ;; ;; OR
-  (load-theme 'modus-vivendi t)
-  :bind ("<f5>" . modus-themes-toggle))
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'doom-vibrant t)
+
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+  
+  ;; Enable custom neotree theme (all-the-icons must be installed!)
+  (doom-themes-neotree-config)
+  ;; or for treemacs users
+  (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+  (doom-themes-treemacs-config)
+  
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config))
 
 (set-face-attribute 'mode-line nil :box nil)
 (set-face-attribute 'mode-line-inactive nil :box nil)
 
-(set-face-attribute 'cursor nil :background (modus-themes-color-alts 'blue 'blue))
+;; add this into above config of modus themes
+;; (set-face-attribute 'cursor nil :background (modus-themes-color-alts 'blue 'blue))
 
 (use-package swiper
   :ensure t
@@ -237,11 +257,11 @@
 (set-face-attribute 'fixed-pitch nil :font "Hack" :height 110)
 
 ;; Set the variable pitch face
-(set-face-attribute 'variable-pitch nil :font "Cantarell" :height 130 :weight 'regular)
+(set-face-attribute 'variable-pitch nil :font "Fira Sans Book" :height 120 :weight 'regular)
 
 (use-package doom-modeline
   :ensure t
-  :init (doom-modeline-mode -1)
+  :init (doom-modeline-mode 1)
   :custom-face (mode-line ((t (:height 0.95))))
   )
 
@@ -262,6 +282,16 @@
   :init
   (setq lsp-keymap-prefix "C-c l")
   :config
+  (setq
+   lsp-headerline-breadcrumb-enable nil
+   lsp-enable-symbol-highlighting t
+   lsp-lens-enable t
+   lsp-ui-sideline-enable t
+   lsp-modeline-code-actions-enable t
+   lsp-ui-sideline-enable t
+   lsp-modeline-diagnostics-enable t
+   lsp-completion-show-kind t
+   )
   (lsp-enable-which-key-integration t))
 
 (use-package python-mode
@@ -420,19 +450,3 @@
 ;;         wg-mode-line-decor-right-brace "]"  ; how to surround it
 ;;         wg-mode-line-decor-divider ":"))
 
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(column-number-mode t)
- '(global-hl-line-mode t)
- '(package-selected-packages
-   '(ivy-posframe ace-window elfeed vterm poet-theme python-pytest python-black orderless minions diminish ibuffer-projectile yasnippet-snippets which-key use-package rainbow-delimiters pyvenv python-mode powerline modus-themes magit lsp-pyright ivy-rich ivy-prescient helpful eyebrowse expand-region doom-modeline counsel-projectile company-prescient company-box all-the-icons-ivy all-the-icons-dired)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(mode-line ((t (:height 0.95)))))
