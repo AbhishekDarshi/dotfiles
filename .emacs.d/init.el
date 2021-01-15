@@ -12,11 +12,22 @@
 (tool-bar-mode -1)
 ;; (tooltip mode -1)
 (menu-bar-mode -1)
-
+(setq blink-cursor-mode t)
+(setq-default cursor-type 'hbar)
 ;; cycle spacing blank characters
 (global-set-key (kbd "M-SPC") 'cycle-spacing)
 ;; delete blank lines - by default it is bound to C-x C-o
 (global-set-key (kbd "M-o") 'delete-blank-lines)
+;; display column number
+(column-number-mode)
+
+(defun prev-window ()
+  (interactive)
+  (other-window -1))
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
 (use-package ace-window
   :ensure t
@@ -26,14 +37,6 @@
 
 (global-set-key (kbd "C-.") #'other-window)
 (global-set-key (kbd "C-,") #'prev-window)
-
-(defun prev-window ()
-  (interactive)
-  (other-window -1))
-
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
 
 (use-package which-key
   :ensure t
@@ -76,6 +79,7 @@
   (setq projectile-switch-project-action #'projectile-dired))
 
 (global-hl-line-mode +1)
+;; (global-display-line-numbers-mode t)
 ;; (add-hook 'prog-mode-hook 'linum-mode)
 (delete-selection-mode 1)
 
@@ -135,6 +139,7 @@
 ;;   :bind ("<f5>" . modus-themes-toggle))
 
 (use-package doom-themes
+  :ensure t
   :config
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
@@ -326,9 +331,9 @@
 
 ;; vterm is not working check the documentation once.
 ;; https://github.com/akermu/emacs-libvterm
-(use-package vterm
-  :ensure t
-  :load-path  "/home/mars/.emacs.d/elpa/vterm-20210108.132/build/")
+;; (use-package vterm
+;;   :ensure t
+;;   :load-path  "/home/mars/.emacs.d/elpa/vterm-20210108.132/build/")
 
 ;;(use-package all-the-icons
 ;;  :ensure t)
