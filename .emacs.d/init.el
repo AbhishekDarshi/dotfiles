@@ -144,7 +144,7 @@
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-vibrant t)
+  (load-theme 'doom-tomorrow-night t)
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
@@ -257,7 +257,7 @@
   :config (counsel-projectile-mode))
 
 
-(set-face-attribute 'default nil :font "Hack" :height 110)
+(set-face-attribute 'default nil :font "Hack" :height 105)
 ;; Set the fixed pitch face
 (set-face-attribute 'fixed-pitch nil :font "Hack" :height 110)
 
@@ -360,7 +360,7 @@
   :config
   (company-prescient-mode 1))
 
-;; probably same as prescient, check once
+;; same as prescient, check once
 ;; (use-package amx
 ;;   :ensure t
 ;;   :after ivy
@@ -455,3 +455,34 @@
 ;;         wg-mode-line-decor-right-brace "]"  ; how to surround it
 ;;         wg-mode-line-decor-divider ":"))
 
+(use-package rustic
+  :ensure t
+  ;; :mode ("\\.rs\\'" . rustic-mode)
+  :config
+  (setq rustic-lsp-client 'lsp-mode
+        rustic-lsp-server 'rust-analyzer
+        rustic-analyzer-command '("~/usr/bin/rust-analyzer"))
+  (add-hook 'rustic-mode-hook #'company-mode)
+  (add-hook 'rustic-mode-hook #'yas-minor-mode)
+  (add-hook 'rustic-mode-hook #'subword-mode)
+  ;; (add-hook 'rustic-mode-hook #'flycheck-rust-setup)
+  (add-hook 'rustic-mode-hook #'electric-pair-mode))
+
+;; (use-package ob-rust
+;;   :ensure t
+;;   :after org)
+
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(ob-rust rustic yasnippet-snippets which-key vterm use-package rainbow-delimiters pyvenv python-pytest python-mode python-black powerline poet-theme orderless modus-themes minions magit lsp-pyright ivy-rich ivy-prescient ivy-posframe ibuffer-projectile helpful eyebrowse expand-region elfeed doom-themes doom-modeline diminish counsel-projectile company-prescient company-box all-the-icons-ivy all-the-icons-dired ace-window)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(mode-line ((t (:height 0.95)))))
