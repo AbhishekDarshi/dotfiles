@@ -120,8 +120,6 @@
   :diminish
   :hook (company-mode . company-box-mode))
 
-
-;; modus theme config from prot
 (use-package modus-themes
   :ensure t
   :init
@@ -152,8 +150,6 @@
         modus-themes-diffs 'fg-only ; {nil,'desaturated,'fg-only,'bg-only}
         modus-themes-org-blocks 'rainbow ; {nil,'grayscale,'rainbow}
         modus-themes-org-habit 'traffic-light ; {nil,'simplified,'traffic-light}
-        modus-themes-headings ; Read the manual for this one
-        '((t . nil))
         modus-themes-variable-pitch-ui nil
         modus-themes-variable-pitch-headings nil
         modus-themes-scale-headings nil
@@ -162,12 +158,7 @@
         modus-themes-scale-3 1.21
         modus-themes-scale-4 1.27
         modus-themes-scale-5 1.33)
-  :config
-      (setq modus-themes-operandi-color-overrides nil
-            modus-themes-vivendi-color-overrides t)))
   (load-theme 'modus-vivendi t)
-  :hook ((after-init-hook . modus-themes-load-operandi)
-         (modus-themes-after-load-theme-hook . prot/modus-themes-custom-faces))
   :bind ("<f5>" . modus-themes-toggle))
 
 
@@ -181,6 +172,7 @@
 ;; 	)
 ;;   (load-theme 'modus-vivendi t)
 ;;   :bind ("<f5>" . modus-themes-toggle))
+
 
 ;; (use-package doom-themes
 ;;   :ensure t
@@ -389,28 +381,6 @@
   :init (icomplete-mode) ; optional but recommended!
   :custom (completion-styles '(orderless)))
 
-(use-package rustic
-  :ensure t
-  :config
-  (setq rustic-lsp-client 'lsp-mode
-        rustic-lsp-server 'rust-analyzer
-        rustic-analyzer-command '("~/usr/bin/rust-analyzer"))
-  (add-hook 'rustic-mode-hook #'company-mode)
-  (add-hook 'rustic-mode-hook #'yas-minor-mode)
-  (add-hook 'rustic-mode-hook #'subword-mode)
-  ;; (add-hook 'rustic-mode-hook #'flycheck-rust-setup)
-  (add-hook 'rustic-mode-hook #'electric-pair-mode))
-
-(use-package ob-rust
-  :ensure t
-  :after org)
-
-;; (use-package selectrum
-;;   :ensure t
-;;   :config
-;;   (setq selectrum-prescient-mode +1
-;; 	))
-
 ;; dap debugger config
 ;; read org mode to maintain todos and other things.
 ;; know more shortcuts in emacs for easy buffer movement.
@@ -437,4 +407,26 @@
 ;; magit and dired configs
 ;; zen mode for coding.
 
+
+(use-package rustic
+  :ensure t
+  :config
+  (setq rustic-lsp-client 'lsp-mode
+        rustic-lsp-server 'rust-analyzer
+        rustic-analyzer-command '("~/usr/bin/rust-analyzer"))
+  (add-hook 'rustic-mode-hook #'company-mode)
+  (add-hook 'rustic-mode-hook #'yas-minor-mode)
+  (add-hook 'rustic-mode-hook #'subword-mode)
+  ;; (add-hook 'rustic-mode-hook #'flycheck-rust-setup)
+  (add-hook 'rustic-mode-hook #'electric-pair-mode))
+
+(use-package ob-rust
+  :ensure t
+  :after org)
+
+;; (use-package selectrum
+;;   :ensure t
+;;   :config
+;;   (setq selectrum-prescient-mode +1
+;; 	))
 
