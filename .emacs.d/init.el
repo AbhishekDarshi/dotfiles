@@ -20,29 +20,33 @@
 (global-set-key (kbd "M-o") 'delete-blank-lines)
 ;; display column number
 (column-number-mode)
-
-(defun prev-window ()
-  (interactive)
-  (other-window -1))
+;; cursor changes
+(blink-cursor-mode 1)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 
+;; to switch windows quickly
+;; https://github.com/abo-abo/ace-window
 (use-package ace-window
   :ensure t
   )
 
 (global-set-key (kbd "C-x o") 'ace-window)
 
+(defun prev-window ()
+  (interactive)
+  (other-window -1))
+
 (global-set-key (kbd "C-.") #'other-window)
 (global-set-key (kbd "C-,") #'prev-window)
 
 (use-package which-key
   :ensure t
-  :diminish which-key-mode
+  :diminish
   :init (which-key-mode)
-  :diminish which-key-mode
+  :diminish
   :config
   (setq which-key-idle-delay 1))
 
@@ -53,6 +57,7 @@
   :config
   (setq elfeed-feeds
 	'(("https://www.reddit.com/r/emacs/new.rss" emacs)
+	  ("https://200ok.ch/atom.xml" emacs)
 	  ("https://hunterx-hunter.com/feed" manga hunter)
 	  ("https://www.reddit.com/r/planetemacs/new.rss" emacs)
 	  ("https://www.reddit.com/r/django/new.rss" python django)
@@ -61,16 +66,15 @@
 	  ))
   )
 (global-set-key (kbd "C-x w") 'elfeed)
-
 ;; checkout elfeed-org and other related packages
 
 
 (use-package projectile
-  :diminish projectile-mode
+  :diminish
   :config (projectile-mode 1)
   (setq projectile-enable-caching t)
   (setq projectile-sort-order 'recently-active)
-  (setq projectile-completion-system 'ivy)
+  ;;(setq projectile-completion-system 'ivy)
   :bind-keymap
   ("C-c p" . projectile-command-map)
   :init
@@ -79,8 +83,6 @@
   (setq projectile-switch-project-action #'projectile-dired))
 
 (global-hl-line-mode +1)
-;; (global-display-line-numbers-mode t)
-;; (add-hook 'prog-mode-hook 'linum-mode)
 (delete-selection-mode 1)
 
 (setq backup-directory-alist '(("." . "~/custom/.saves")))
@@ -90,19 +92,15 @@
 
 (show-paren-mode 1)
 
-;; (setq ido-everywhere t)
-;; (setq ido-enable-flex-matching t)
-;; (ido-mode t)
-
-
 (use-package expand-region
   :ensure t
   :bind
   ("C-=" . er/expand-region)
   ("C--" . er/expands-region))
 
+
 (use-package company
-  :diminish company-mode
+  :diminish
   :ensure t
   :after lsp-mode
   :hook (lsp-mode . company-mode)
@@ -119,50 +117,96 @@
 
 (use-package company-box
   :ensure t
-  :diminish company-box
+  :diminish
   :hook (company-mode . company-box-mode))
+
+
+;; modus theme config from prot
+(use-package modus-themes
+  :ensure t
+  :init
+  (setq modus-themes-slanted-constructs t
+        modus-themes-bold-constructs nil
+        modus-themes-fringes nil ; {nil,'subtle,'intense}
+        ;; Options for `modus-themes-lang-checkers': nil,
+        ;; 'straight-underline, 'subtle-foreground,
+        ;; 'subtle-foreground-straight-underline, 'intense-foreground,
+        ;; 'intense-foreground-straight-underline, 'colored-background
+        modus-themes-lang-checkers 'straight-underline
+        modus-themes-mode-line nil ; {nil,'3d,'moody}
+        ;; Options for `modus-themes-syntax': nil, 'faint,
+        ;; 'yellow-comments, 'green-strings,
+        ;; 'yellow-comments-green-strings, 'alt-syntax,
+        ;; 'alt-syntax-yellow-comments
+        modus-themes-syntax nil
+        modus-themes-intense-hl-line t
+        modus-themes-paren-match 'subtle-bold ; {nil,'subtle-bold,'intense,'intense-bold}
+        ;; Options for `modus-themes-links': nil, 'faint,
+        ;; 'neutral-underline, 'faint-neutral-underline, 'no-underline,
+        ;; 'underline-only
+        modus-themes-links 'underline-only
+        modus-themes-no-mixed-fonts nil
+        modus-themes-prompts 'intense ; {nil,'subtle,'intense}
+        modus-themes-completions 'opinionated ; {nil,'moderate,'opinionated}
+        modus-themes-region 'bg-only ; {nil,'no-extend,'bg-only,'bg-only-no-extend}
+        modus-themes-diffs 'fg-only ; {nil,'desaturated,'fg-only,'bg-only}
+        modus-themes-org-blocks 'rainbow ; {nil,'grayscale,'rainbow}
+        modus-themes-org-habit 'traffic-light ; {nil,'simplified,'traffic-light}
+        modus-themes-headings ; Read the manual for this one
+        '((t . nil))
+        modus-themes-variable-pitch-ui nil
+        modus-themes-variable-pitch-headings nil
+        modus-themes-scale-headings nil
+        modus-themes-scale-1 1.1
+        modus-themes-scale-2 1.15
+        modus-themes-scale-3 1.21
+        modus-themes-scale-4 1.27
+        modus-themes-scale-5 1.33)
+  :config
+      (setq modus-themes-operandi-color-overrides nil
+            modus-themes-vivendi-color-overrides t)))
+  (load-theme 'modus-vivendi t)
+  :hook ((after-init-hook . modus-themes-load-operandi)
+         (modus-themes-after-load-theme-hook . prot/modus-themes-custom-faces))
+  :bind ("<f5>" . modus-themes-toggle))
 
 
 ;; (use-package modus-themes
 ;;   :ensure t
 ;;   :init
-;;   ;; Add all your customizations prior to loading the themes
 ;;   (setq modus-themes-slanted-constructs t
-;; ;;	set-face-attribute 'cursor nil :background (modus-themes-color-alts 'blue 'blue)
-;; 	modus-themes-mode-line '2d
-;;         modus-themes-bold-constructs nil)
-;;   ;;:config
-;;   ;; Load the theme of your choice
-;;   ;; (modus-themes-load-operandi)
-;;   ;; ;; OR
+;; 	modus-themes-mode-line nil
+;;         modus-themes-bold-constructs t
+;; 	modus-themes-fringes nil
+;; 	)
 ;;   (load-theme 'modus-vivendi t)
 ;;   :bind ("<f5>" . modus-themes-toggle))
 
-(use-package doom-themes
-  :ensure t
-  :config
-  ;; Global settings (defaults)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-tomorrow-night t)
+;; (use-package doom-themes
+;;   :ensure t
+;;   :config
+;;   ;; Global settings (defaults)
+;;   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+;;         doom-themes-enable-italic t) ; if nil, italics is universally disabled
+;;   (load-theme 'doom-tomorrow-night t)
 
-  ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
+;;   ;; Enable flashing mode-line on errors
+;;   (doom-themes-visual-bell-config)
   
-  ;; Enable custom neotree theme (all-the-icons must be installed!)
-  (doom-themes-neotree-config)
-  ;; or for treemacs users
-  (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
-  (doom-themes-treemacs-config)
+;;   ;; Enable custom neotree theme (all-the-icons must be installed!)
+;;   (doom-themes-neotree-config)
+;;   ;; or for treemacs users
+;;   (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+;;   (doom-themes-treemacs-config)
   
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config))
+;;   ;; Corrects (and improves) org-mode's native fontification.
+;;   (doom-themes-org-config))
 
 (set-face-attribute 'mode-line nil :box nil)
 (set-face-attribute 'mode-line-inactive nil :box nil)
 
 ;; add this into above config of modus themes
-;; (set-face-attribute 'cursor nil :background (modus-themes-color-alts 'blue 'blue))
+(set-face-attribute 'cursor nil :background (modus-themes-color-alts 'blue 'green))
 
 (use-package swiper
   :ensure t
@@ -171,21 +215,22 @@
 (use-package ivy
   :ensure t
   :diminish
-  :bind (("C-c s" . swiper)
-	 :map ivy-minibuffer-map
-	 ;;("TAB" . ivy-alt-done)
-	 ("C-L" . ivy-alt-done)
-	 ("C-j" . ivy-next-line)
-	 ("C-k" . ivy-previous-line)
-	 :map ivy-switch-buffer-map
-	 ("C-k" . ivy-previous-line)
-	 ("C-l" . ivy-done)
-	 ("C-d" . ivy-switch-buffer-kill)
-	 :map ivy-reverse-i-search-map
-	 ("C-k" . ivy-previous-line)
-	 ("C-d" . ivy-reverse-i-search-kill))
+  ;; :bind (("C-c s" . swiper))
+	 ;; :map ivy-minibuffer-map
+	 ;; ;;("TAB" . ivy-alt-done)
+	 ;; ("C-L" . ivy-alt-done)
+	 ;; ("C-j" . ivy-next-line)
+	 ;; ("C-k" . ivy-previous-line)
+	 ;; :map ivy-switch-buffer-map
+	 ;; ("C-k" . ivy-previous-line)
+	 ;; ("C-l" . ivy-done)
+	 ;; ("C-d" . ivy-switch-buffer-kill)
+	 ;; :map ivy-reverse-i-search-map
+	 ;; ("C-k" . ivy-previous-line)
+	 ;; ("C-d" . ivy-reverse-i-search-kill))
   :config
   (ivy-mode 1)
+  ;; (setq ivy-do-completion-in-region nil)
   (setq ivy-display-style 'fancy)
   (setq enable-recursive-minibuffers t)
   (setq ivy-use-selectable-prompt t)
@@ -213,25 +258,26 @@
   :init
   (ivy-rich-mode 1))
 
-;; change the position of window in the frame
-(use-package ivy-posframe
-  :ensure t
-  :delight
-  :custom
-  (ivy-posframe-height-alist
-   '((swiper . 15)
-     (t . 10)))
-  (ivy-posframe-display-functions-alist
-   '((complete-symbol . ivy-posframe-display-at-point)
-     (counsel-describe-function . nil)
-     (counsel-describe-variable . nil)
-     (swiper . nil)
-     (swiper-isearch . nil)
-     (t . ivy-posframe-display-at-frame-center)))
-  :config
-  (ivy-posframe-mode -1))
+;; ;; change the position of window in the frame
+;; (use-package ivy-posframe
+;;   :ensure t
+;;   :delight
+;;   :custom
+;;   (ivy-posframe-height-alist
+;;    '((swiper . 15)
+;;      (t . 10)))
+;;   (ivy-posframe-display-functions-alist
+;;    '((complete-symbol . ivy-posframe-display-at-point)
+;;      (counsel-describe-function . nil)
+;;      (counsel-describe-variable . nil)
+;;      (swiper . nil)
+;;      (swiper-isearch . nil)
+;;      (t . ivy-posframe-display-at-frame-center)))
+;;   :config
+;;   (ivy-posframe-mode -1))
 
 (use-package counsel
+  :diminish
   :ensure t
   :bind (("C-M-j" . 'counsel-switch-buffer)
 	 ("M-x" . counsel-M-x)
@@ -241,39 +287,25 @@
   :config
   (counsel-mode 1))
 
-(use-package helpful
-  :ensure t
-  :custom
-  (counsel-describe-function-function #'helpful-callable)
-  (counsel-describe-variable-function #'helpful-variable)
-  :bind
-  ([remap describe-function] . counsel-describe-function)
-  ([remap describe-command] . helpful-command)
-  ([remap describe-variable] . counsel-describe-variable)
-  ([remap describe-key] . helpful-key))
 
 (use-package counsel-projectile
   :ensure t
   :config (counsel-projectile-mode))
 
 
-(set-face-attribute 'default nil :font "Hack" :height 105)
+(set-face-attribute 'default nil :font "Hack" :height 110)
 ;; Set the fixed pitch face
 (set-face-attribute 'fixed-pitch nil :font "Hack" :height 110)
 
 ;; Set the variable pitch face
 (set-face-attribute 'variable-pitch nil :font "Fira Sans Book" :height 120 :weight 'regular)
 
-(use-package doom-modeline
-  :ensure t
-  :init (doom-modeline-mode 1)
-  :custom-face (mode-line ((t (:height 0.95))))
-  )
+;; (use-package doom-modeline
+;;   :ensure t
+;;   :init (doom-modeline-mode -1)
+;;   :custom-face (mode-line ((t (:height 0.95))))
+;;   )
 
-(use-package rainbow-delimiters
-  :ensure t
-  :hook (prog-mode . rainbow-delimiters-mode)
-  :init (rainbow-delimiters-mode -1))
 
 (use-package all-the-icons
   :ensure t) ;; M-x all-the-icons-install-fonts
@@ -329,18 +361,6 @@
 (use-package yasnippet-snippets
   :ensure t)
 
-;; vterm is not working check the documentation once.
-;; https://github.com/akermu/emacs-libvterm
-;; (use-package vterm
-;;   :ensure t
-;;   :load-path  "/home/mars/.emacs.d/elpa/vterm-20210108.132/build/")
-
-;;(use-package all-the-icons
-;;  :ensure t)
-
-;; (use-package all-the-icons-ivy
-;;   :ensure t
-;;   :init (all-the-icons-ivy-setup))
 
 (use-package all-the-icons-dired
   :ensure t
@@ -360,104 +380,17 @@
   :config
   (company-prescient-mode 1))
 
-;; same as prescient, check once
-;; (use-package amx
-;;   :ensure t
-;;   :after ivy
-;;   :custom
-;;   (amx-backend 'auto)
-;;   (amx-save-file "~/.emacs/amx-items")
-;;   (amx-history-length 50)
-;;   (amx-show-keybindings nil)
-;;   :config
-;;   (amx-mode 1))
-
-(use-package powerline
-  :ensure t)
-
-(use-package eyebrowse
- :ensure t
- :diminish eyebrowse-mode
- :config (progn
-           (eyebrowse-mode t)
-           (setq eyebrowse-new-workspace t)))
-
-(use-package minions
-  :ensure t
-  :config (minions-mode 1))
 
 (use-package diminish
   :ensure t)
-
-;; cursor changes
-(blink-cursor-mode -1)
-
-;; icomplete
-;; (use-package icomplete-vertical
-;;   :ensure t
-;;   :demand t
-;;   :custom
-;;   (completion-styles '(partial-completion substring))
-;;   (completion-category-overrides '((file (styles basic substring))))
-;;   (read-file-name-completion-ignore-case t)
-;;   (read-buffer-completion-ignore-case t)
-;;   (completion-ignore-case t)
-;;   :config
-;;   (icomplete-mode -1)
-;;   (icomplete-vertical-mode)
-;;   :bind (:map icomplete-minibuffer-map
-;;               ("<down>" . icomplete-forward-completions)
-;;               ("C-n" . icomplete-forward-completions)
-;;               ("<up>" . icomplete-backward-completions)
-;;               ("C-p" . icomplete-backward-completions)
-;;               ("C-v" . icomplete-vertical-toggle)))
 
 (use-package orderless
   :ensure t
   :init (icomplete-mode) ; optional but recommended!
   :custom (completion-styles '(orderless)))
 
-;; dap debugger config
-;; read org mode to maintain todos and other things.
-;; know more shortcuts in emacs for easy buffer movement.
-;; autocompletion for filters in elfeed.
-;; shortcut for eww.
-;; web, javascript packages for web dev.
-;; configure modeline to be more clean - currently using minion package for this.
-;; read about workgroups2 so that it can be replaced with eyebrowse.
-;; embark
-;; check for the best way to maintain this config.
-;; vterm is not working.
-;; saving current workspace or desktop state - check for this package
-;; imenu and imenu list
-;; checkout below repos for code folding
-  ;; https://github.com/gregsexton/origami.el/tree/e558710a975e8511b9386edc81cd6bdd0a5bda74
-  ;; https://github.com/matsievskiysv/vimish-fold/tree/a6501cbfe3db791f9ca17fd986c7202a87f3adb8
-  ;; https://github.com/emacsorphanage/yafolding/tree/4c1888ae45f9241516519ae0ae3a899f2efa05ba
-;; add keymap toggle for commenting and uncommenting code block
-;; run pytest tests from emacs
-;; configure elfeed for easy access and play youtube video feeds, if not possible move to newsboat.
-;; check if we can find the package or pyright settings for getting the list member variables in current python buffer
-;; add a shortcut to configure vertical split into horizontal split with predefined height for it
-;; relative line number config is not working as expected.
-;; magit and dired configs
-;; zen mode for coding.
-
-
-
-;; (use-package workgroups2
-;;   :ensure t
-;;   :config
-;;   (setq workgroups-mode 1
-;; 	wg-mode-line-display-on t
-;; 	wg-flag-modified t
-;; 	wg-mode-line-decor-left-brace "["
-;;         wg-mode-line-decor-right-brace "]"  ; how to surround it
-;;         wg-mode-line-decor-divider ":"))
-
 (use-package rustic
   :ensure t
-  ;; :mode ("\\.rs\\'" . rustic-mode)
   :config
   (setq rustic-lsp-client 'lsp-mode
         rustic-lsp-server 'rust-analyzer
@@ -468,21 +401,40 @@
   ;; (add-hook 'rustic-mode-hook #'flycheck-rust-setup)
   (add-hook 'rustic-mode-hook #'electric-pair-mode))
 
-;; (use-package ob-rust
+(use-package ob-rust
+  :ensure t
+  :after org)
+
+;; (use-package selectrum
 ;;   :ensure t
-;;   :after org)
+;;   :config
+;;   (setq selectrum-prescient-mode +1
+;; 	))
+
+;; dap debugger config
+;; read org mode to maintain todos and other things.
+;; know more shortcuts in emacs for easy buffer movement.
+;; autocompletion for filters in elfeed.
+;; shortcut for eww.
+;; web, javascript packages for web dev.
+;; configure modeline to be more clean - currently using minion package for this.
+;; read about workgroups2 if it can be replaced with eyebrowse. ---- emacs has tab bar mode by default, check for that config
+;; embark
+;; check for the best way to maintain this config.
+;; vterm is not working.
+;; saving current workspace or desktop state - check for this package
+;; imenu and imenu list
+;; checkout below repos for code folding
+  ;; https://github.com/gregsexton/origami.el/tree/e558710a975e8511b9386edc81cd6bdd0a5bda74
+  ;; https://github.com/matsievskiysv/vimish-fold/tree/a6501cbfe3db791f9ca17fd986c7202a87f3adb8
+  ;; https://github.com/emacsorphanage/yafolding/tree/4c1888ae45f9241516519ae0ae3a899f2efa05ba
+;; add keymap toggle for commenting and uncommenting code block - C-x C-; - def keymap
+;; run pytest tests from emacs
+;; configure elfeed for easy access and play youtube video feeds, if not possible move to newsboat.
+;; check if we can find the package or pyright settings for getting the list member variables in current python buffer
+;; add a shortcut to configure vertical split into horizontal split with predefined height for it
+;; relative line number config is not working as expected.
+;; magit and dired configs
+;; zen mode for coding.
 
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(ob-rust rustic yasnippet-snippets which-key vterm use-package rainbow-delimiters pyvenv python-pytest python-mode python-black powerline poet-theme orderless modus-themes minions magit lsp-pyright ivy-rich ivy-prescient ivy-posframe ibuffer-projectile helpful eyebrowse expand-region elfeed doom-themes doom-modeline diminish counsel-projectile company-prescient company-box all-the-icons-ivy all-the-icons-dired ace-window)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(mode-line ((t (:height 0.95)))))
