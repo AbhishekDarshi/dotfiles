@@ -12,7 +12,9 @@
 (tool-bar-mode -1)
 ;; (tooltip mode -1)
 (menu-bar-mode -1)
+;; blink cursor
 (setq blink-cursor-mode t)
+;; set cursor type as horizontal bar
 (setq-default cursor-type 'hbar)
 ;; cycle spacing blank characters
 (global-set-key (kbd "M-SPC") 'cycle-spacing)
@@ -22,6 +24,16 @@
 (column-number-mode)
 ;; cursor changes
 (blink-cursor-mode 1)
+;; highlight current cursor line in buffer
+(global-hl-line-mode t)
+;; enable line numbers globally
+(global-display-line-numbers-mode t)
+(delete-selection-mode 1)
+(setq backup-directory-alist '(("." . "~/custom/.saves")))
+;; (display-line-numbers-mode 1)
+;; relative line number
+;; (setq display-line-numbers 'relative)
+(show-paren-mode 1)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -74,23 +86,13 @@
   :config (projectile-mode 1)
   (setq projectile-enable-caching t)
   (setq projectile-sort-order 'recently-active)
-  ;;(setq projectile-completion-system 'ivy)
+  (setq projectile-completion-system 'ivy)
   :bind-keymap
   ("C-c p" . projectile-command-map)
   :init
   (when (file-directory-p "~/devc/")
     (setq projectile-project-search-path '("~/devc/")))
   (setq projectile-switch-project-action #'projectile-dired))
-
-(global-hl-line-mode +1)
-(delete-selection-mode 1)
-
-(setq backup-directory-alist '(("." . "~/custom/.saves")))
-
-(display-line-numbers-mode 1)
-(setq display-line-numbers 'relative)
-
-(show-paren-mode 1)
 
 (use-package expand-region
   :ensure t
@@ -194,8 +196,8 @@
 ;;   ;; Corrects (and improves) org-mode's native fontification.
 ;;   (doom-themes-org-config))
 
-(set-face-attribute 'mode-line nil :box nil)
-(set-face-attribute 'mode-line-inactive nil :box nil)
+;; (set-face-attribute 'mode-line nil :box nil)
+;; (set-face-attribute 'mode-line-inactive nil :box nil)
 
 ;; add this into above config of modus themes
 (set-face-attribute 'cursor nil :background (modus-themes-color-alts 'blue 'green))
@@ -429,4 +431,3 @@
 ;;   :config
 ;;   (setq selectrum-prescient-mode +1
 ;; 	))
-
