@@ -1,0 +1,28 @@
+{
+    "telemetry.enableCrashReporter": false,
+    "telemetry.enableTelemetry": false,
+
+    "editor.fontFamily": "Hack",
+    // "zenMode.centerLayout": false,
+    // "zenMode.hideLineNumbers": false,
+    // "zenMode.hideTabs": false,
+    // "zenMode.silentNotifications": false,
+    "zenMode.fullScreen": false,
+    "window.menuBarVisibility": "toggle",
+    "workbench.settings.useSplitJSON": true,
+    "editor.fontLigatures": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "emmet.includeLanguages": {
+        "javascript": "javascriptreact"
+    },
+    "editor.wordWrap": "on",
+    "editor.fontSize": 15,
+    "workbench.sideBar.location": "right",
+    "workbench.iconTheme": "vscode-great-icons",
+    "editor.minimap.enabled": false,
+    "workbench.editor.showTabs": false,
+    "search.useIgnoreFiles": false,
+    "workbench.activityBar.visible": false,
+    "workbench.statusBar.visible": false,
+}
