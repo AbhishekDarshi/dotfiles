@@ -150,7 +150,6 @@
   (prescient-persist-mode +1))
 
 ;; (use-package vscode-icon
-;;   :ensure t
 ;;   :commands (vscode-icon-for-file))
 
 ;; Company
@@ -256,23 +255,18 @@
   )
 
 (use-package python-black
-  :ensure t
   :after python
   :config
   (setq python-black-on-save-mode t))
 
 ;; https://github.com/wbolster/emacs-python-pytest
-(use-package python-pytest
-  :ensure t)
-
+(use-package python-pytest)
 
 (use-package pyvenv
-  :ensure t
   :config
   (pyvenv-mode 1))
 
 (use-package all-the-icons-dired
-  :ensure t
   :hook (dired-mode . all-the-icons-dired-mode))
 
 (use-package highlight-indent-guides
@@ -433,11 +427,11 @@
 ;; (add-to-list 'default-frame-alist
 ;; 	     '(font . "Hack Nerd Font-11"))
 
-(set-face-attribute 'default nil :font "Mononoki Nerd Font" :height 110)
+(set-face-attribute 'default nil :font "Iosevka" :height 115)
 ;; Set the fixed pitch face
-(set-face-attribute 'fixed-pitch nil :font "Hack Nerd Font" :height 110)
+(set-face-attribute 'fixed-pitch nil :font "Hack" :height 110)
 (set-face-attribute 'mode-line nil :font "Iosevka" :height 110)
-
+(set-face-attribute 'mode-line-inactive nil :font "Iosevka" :height 110)
 
 ;; cycle spacing blank characters
 (global-set-key (kbd "M-SPC") 'cycle-spacing)
@@ -482,7 +476,7 @@
         ;; 'yellow-comments, 'green-strings,
         ;; 'yellow-comments-green-strings, 'alt-syntax,
         ;; 'alt-syntax-yellow-comments
-        modus-themes-syntax nil
+        modus-themes-syntax 'alt-syntax
         modus-themes-intense-hl-line 'underline-accented
         modus-themes-paren-match 'subtle-bold ; {nil,'subtle-bold,'intense,'intense-bold}
         ;; Options for `modus-themes-links': nil, 'faint,
@@ -505,13 +499,14 @@
         modus-themes-scale-4 1.27
         modus-themes-scale-5 1.33)
   (load-theme 'modus-vivendi t)
+  :config
+  (set-face-attribute 'cursor nil :background (modus-themes-color-alts 'blue 'blue))  
   :bind ("<f5>" . modus-themes-toggle))
 
-(set-face-attribute 'cursor nil :background (modus-themes-color-alts 'blue 'green))
+
 
 
 (use-package rustic
-  :ensure
   :bind (:map rustic-mode-map
               ("M-j" . lsp-ui-imenu)
               ("M-?" . lsp-find-references)
@@ -541,4 +536,11 @@
   (add-hook 'prog-mode-hook 'yas-minor-mode)
   (add-hook 'text-mode-hook 'yas-minor-mode))
 
+;; todo
+
+;; hydra
+;; session restore
+;; dap mode
+;; tramp
+;; workspaces
 
