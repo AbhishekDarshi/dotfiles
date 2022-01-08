@@ -1,12 +1,7 @@
 (setq package-enable-at-startup t)
 
-
-
 ;; Allow loading from the package cache
 (setq package-quickstart t)
-
-
-
 
 (setq inhibit-splash-screen t)
 (setq use-dialog-box t)                 ; only for mouse events
@@ -23,12 +18,20 @@
 ;; display column number
 (column-number-mode)
 ;; cursor changes
-;; (blink-cursor-mode 1)
+;; (blink-cursor-mode -1)
 ;; highlight current cursor line in buffer
 (global-hl-line-mode t)
 ;; enable line numbers globally
-(global-display-line-numbers-mode t)
+;; (global-display-line-numbers-mode t)
 (delete-selection-mode 1)
 ;; (setq blink-cursor-mode t)
 ;; set cursor type as horizontal bar
-(setq-default cursor-type 'hbar)
+(setq-default cursor-type 'box)
+;; winner mode
+(winner-mode 1)
+(repeat-mode t)
+(recentf-mode 1)
+;; (global-display-fill-column-indicator-mode)
+;; (tab-bar-mode 1)
+;; (display-battery-mode 1)
+;; (display-time-mode 1)
