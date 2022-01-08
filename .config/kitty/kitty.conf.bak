@@ -1,0 +1,12 @@
+font_family Iosevka
+font_size 14
+disable_ligatures cursor
+enable_audio_bell no
+map ctrl+shift+j next_tab
+map ctrl+shift+k previous_tab
+map ctrl+alt+enter    launch --cwd=current
+
+# BEGIN_KITTY_THEME
+# Tango Light
+include current-theme.conf
+# END_KITTY_THEME
