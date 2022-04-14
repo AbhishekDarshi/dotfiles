@@ -124,3 +124,50 @@ nmap <leader>cn <Plug>CyclistNext
 " nnoremap <leader>tr :NvimTreeRefresh<CR>
 " nnoremap <leader>tf :NvimTreeFindFile<CR>
 
+autocmd BufWritePre *.go :silent! lua require('go.format').gofmt()
+
+
+nnoremap <silent><leader>ha :lua require("harpoon.mark").add_file()<CR>
+nnoremap <silent><leader>ht :lua require("harpoon.ui").toggle_quick_menu()<CR>
+nnoremap <silent><leader>hm :lua require("harpoon.cmd-ui").toggle_quick_menu()<CR>
+
+nnoremap <silent><C-h> :lua require("harpoon.ui").nav_file(1)<CR>
+nnoremap <silent><C-t> :lua require("harpoon.ui").nav_file(2)<CR>
+nnoremap <silent><C-s> :lua require("harpoon.ui").nav_file(3)<CR>
+
+
+" https://github.com/ThePrimeagen/.dotfiles/blob/8a0720c77ad3b42f32d80279cf970fdc738c0671/nvim/.config/nvim/plugin/colors.vim
+let g:theprimeagen_colorscheme = "gruvbox"
+fun! ColorMyPencils()
+    let g:gruvbox_contrast_dark = 'hard'
+    if exists('+termguicolors')
+        let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+        let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+    endif
+    let g:gruvbox_invert_selection='0'
+
+    set background=dark
+    if has('nvim')
+        call luaeval('vim.cmd("colorscheme " .. _A[1])', [g:theprimeagen_colorscheme])
+    else
+        " TODO: What the way to use g:theprimeagen_colorscheme
+        colorscheme gruvbox
+    endif
+
+    highlight ColorColumn ctermbg=0 guibg=grey
+    hi SignColumn guibg=none
+    hi CursorLineNR guibg=None
+    highlight Normal guibg=none
+    " highlight LineNr guifg=#ff8659
+    " highlight LineNr guifg=#aed75f
+    highlight LineNr guifg=#5eacd3
+    highlight netrwDir guifg=#5eacd3
+    highlight qfFileName guifg=#aed75f
+    hi TelescopeBorder guifg=#5eacd
+endfun
+call ColorMyPencils()
+
+" Vim with me
+nnoremap <leader>cmp :call ColorMyPencils()<CR>
+nnoremap <leader>vwb :let g:theprimeagen_colorscheme =
+set guicursor=
