@@ -542,3 +542,13 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
+
+local map = vim.api.nvim_set_keymap
+local opts = { noremap = true, silent = true }
+-- Move to previous/next
+map('n', ',p', ':BufferPrevious<CR>', opts)
+map('n', ',n', ':BufferNext<CR>', opts)
+
+require('go').setup()
+vim.api.nvim_exec([[ autocmd BufWritePre *.go :silent! lua require('go.format').goimport() ]], false)
+
