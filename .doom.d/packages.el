@@ -60,3 +60,4 @@
 (package! tree-sitter)
 (package! tree-sitter-langs)
 (package! rustic)
+(package! good-scroll)
