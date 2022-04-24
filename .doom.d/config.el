@@ -321,3 +321,7 @@
 
 ;; gap between lang checker underline and text
 (setq underline-minimum-offset 3)
+
+(use-package! good-scroll)
+(setq good-scroll-mode 1)
+(setq ring-bell-function 'ignore)
